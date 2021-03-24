@@ -1,16 +1,13 @@
- /* All stuff for the background of the site */
+/* All stuff for the background of the site */
 body {
-    background-color: rgb(184, 201, 218);
+    background-color: white;
 }
 
 canvas {
-    id:"myCanvas";
-    width: "200";
-    height: "100";
     border: 1px solid #123000;
 }
 
 
 p {
-    color: red; /* Set text color to red */
+    color: red; 
 }
