@@ -7,7 +7,7 @@ function gamestart() {
 }
 
 // this is the canvas on screen
-var myGameArea = {
+let myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
         // this part will initialize the chart
@@ -36,7 +36,7 @@ function component(width, height, color, x, y) {
     this.gravity = 0.05;
     this.yvel = 0
     this.update = function() {
-        ctx = myGameArea.context;
+        let ctx = myGameArea.context;
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
 
