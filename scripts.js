@@ -2,15 +2,12 @@ var bird;
 var pipe1;
 var pipe2;
 
-// TODO: make actual pipes with working gaps inbetween
-
-// later things to do
-// 2. make the pipes have randomized gaps
-// 3. add collisiong
+// TODO. make the pipes have randomized gaps
+// 3. add collision mechanics 
 function gamestart() {
     bird = new flappy(10,10, "red");
-    pipe1 = new pipe(20, 100, "green", 200, 0);
-    pipe2 = new pipe(20, 100, "green", 400, 0);
+    pipe1 = new pipe(20, 100, "green", 200);
+    pipe2 = new pipe(20, 100, "green", 400);
     myGameArea.start();
     myGameArea.canvas.onclick = function() {bird.yvel = -2;};
 }
@@ -59,27 +56,38 @@ class flappy {
 }
 
 class pipe {
-    constructor(width, height, color, x, y) {
+    constructor(width, height, color, x) {
         this.width = width;
         this.height = height;
         this.color = color;
         this.x = x;
-        this.y = y;
-        this.xvel = -5;
+        
+        this.xvel = -3;
 
-        this.gap = 50;
+        this.y = 0;
+        this.gap = 25;
+
+        this.shift = Math.floor((Math.random() * 100) + 1);
     }
 
     update() {
+        let pipeshifter = 50;
+        
         let ctx = myGameArea.context;
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, 0, this.width, this.height / 2 - this.gap); // lower half of pipe
-        ctx.fillRect(this.x, this.height / 2 + this.gap, this.width, this.height); // upper half of pipe
+
+        // botom half of the pipe
+        ctx.fillRect(this.x, (ctx.canvas.height / 2 - this.shift) + pipeshifter + this.gap, this.width, ctx.canvas.height); 
+
+        ctx.fillStyle = this.color;
+        // top half of the pipe
+        ctx.fillRect(this.x, 0, this.width, (ctx.canvas.height / 2 - this.shift) + pipeshifter - this.gap); 
 
         this.x += this.xvel;    
         
         if (this.x + this.width < 0) {
             this.x = 500; // hardcoded but it should teleport back over to other side
+            this.shift = Math.floor((Math.random() * 100) + 1);
         }
     }
 }
