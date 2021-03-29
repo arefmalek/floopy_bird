@@ -2,12 +2,14 @@ var bird;
 var pipe1;
 var pipe2;
 
+let canvheight = 270;
+
 // TODO. make the pipes have randomized gaps
 // 3. add collision mechanics 
 function gamestart() {
     bird = new flappy(10,10, "red");
-    pipe1 = new pipe(20, 100, "green", 200);
-    pipe2 = new pipe(20, 100, "green", 400);
+    pipe1 = new pipe(20, 100, "green", 250);
+    pipe2 = new pipe(20, 100, "green", 500);
     myGameArea.start();
     myGameArea.canvas.onclick = function() {bird.yvel = -2;};
 }
@@ -51,7 +53,15 @@ class flappy {
 
         this.yvel += this.gravity;
 
-        this.y += this.yvel;        
+        this.y += this.yvel;
+        
+        if (pipe1.x <= this.x && this.x + this.width <= pipe1.x + pipe1.width) {
+            // within pipe 1
+            if (this.y <= pipe1.top_pipe || this.y >= pipe1.bottom_pipe) alert("game over! refresh to try again");
+        } 
+        else if (pipe2.x <= this.x && this.x + this.width <= pipe2.x + pipe2.width) {
+            if (this.y <= pipe2.top_pipe || this.y >= pipe2.bottom_pipe) alert("game over! refresh to try again");
+        } //pipe2 collisions
     }
 }
 
@@ -68,6 +78,10 @@ class pipe {
         this.gap = 25;
 
         this.shift = Math.floor((Math.random() * 100) + 1);
+
+        let pipeshifter = 50;
+        this.bottom_pipe = (canvheight / 2 + this.gap) + 50 - this.shift;
+        this.top_pipe = (canvheight / 2 - this.gap) + 50 - this.shift;
     }
 
     update() {
@@ -77,17 +91,20 @@ class pipe {
         ctx.fillStyle = this.color;
 
         // botom half of the pipe
-        ctx.fillRect(this.x, (ctx.canvas.height / 2 - this.shift) + pipeshifter + this.gap, this.width, ctx.canvas.height); 
+        ctx.fillRect(this.x, this.bottom_pipe, this.width, ctx.canvas.height); 
 
         ctx.fillStyle = this.color;
         // top half of the pipe
-        ctx.fillRect(this.x, 0, this.width, (ctx.canvas.height / 2 - this.shift) + pipeshifter - this.gap); 
+        ctx.fillRect(this.x, 0, this.width, this.top_pipe); 
 
         this.x += this.xvel;    
         
         if (this.x + this.width < 0) {
             this.x = 500; // hardcoded but it should teleport back over to other side
             this.shift = Math.floor((Math.random() * 100) + 1);
+
+            this.bottom_pipe = (ctx.canvas.height / 2 - this.shift) + pipeshifter + this.gap;
+            this.top_pipe = (ctx.canvas.height / 2 - this.shift) + pipeshifter - this.gap;
         }
     }
 }
