@@ -57,10 +57,10 @@ class flappy {
         
         if (pipe1.x <= this.x && this.x + this.width <= pipe1.x + pipe1.width) {
             // within pipe 1
-            if (this.y <= pipe1.top_pipe || this.y >= pipe1.bottom_pipe) alert("game over! refresh to try again");
+            if (this.y <= pipe1.top_pipe || this.y + this.height >= pipe1.bottom_pipe) alert("game over! refresh to try again");
         } 
         else if (pipe2.x <= this.x && this.x + this.width <= pipe2.x + pipe2.width) {
-            if (this.y <= pipe2.top_pipe || this.y >= pipe2.bottom_pipe) alert("game over! refresh to try again");
+            if (this.y <= pipe2.top_pipe || this.y + this.height >= pipe2.bottom_pipe) alert("game over! refresh to try again");
         } //pipe2 collisions
     }
 }
