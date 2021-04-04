@@ -3,9 +3,8 @@ var pipe1;
 var pipe2;
 
 let canvheight = 270;
+let score = 0;
 
-// TODO. make the pipes have randomized gaps
-// 3. add collision mechanics 
 function gamestart() {
     bird = new flappy(10,10, "red");
     pipe1 = new pipe(20, 100, "green", 250);
@@ -24,16 +23,26 @@ let myGameArea = {
         this.context = this.canvas.getContext("2d");
 
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+
         console.log("check");
         this.interval = setInterval(updateGameArea, 20);
+
+
     },
     clear : function() {
         // make the thing blue
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = "blue";
         this.context.fillRect(0,0, this.canvas.width, this.canvas.height);
+
+        var ctx = this.canvas.getContext("2d");
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "right";
+        ctx.fillText("Score: " + score, this.canvas.width*5/6, this.canvas.height/5); 
     }
 }
+score
 
 class flappy {
     constructor(width, height, color) {
@@ -100,6 +109,7 @@ class pipe {
         this.x += this.xvel;    
         
         if (this.x + this.width < 0) {
+            score++;
             this.x = 500; // hardcoded but it should teleport back over to other side
             this.shift = Math.floor((Math.random() * 100) + 1);
 
